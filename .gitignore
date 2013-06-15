@@ -1,0 +1,16 @@
+# Compiled source #
+###################
+
+*.pyc
+build
+
+# logs #
+########
+
+*.log
+
+# Crap from vim #
+#################
+
+*.swo
+*.swp
