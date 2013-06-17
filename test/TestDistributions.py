@@ -4,10 +4,10 @@ from pylab import *
 
 config_file = 'config_files/6C.cf'
 
-D = PolSim.Distributions.Dist(config_file, 0.76, 'input_data/Oppermann.copy.npz')
+D = PolSim.Dist(config_file, 0.76, 'input_data/Oppermann.copy.npz')
 prms = D.SimSkyParams()
 
-SV = PolSim.SimVis.SimVis(D, 'B', 0.15, np.linspace(0.12,0.18,100))
+SV = PolSim.SimVis(D, 'B', 0.15, np.linspace(0.12,0.18,100))
 
 plot(SV.fqs, SV.SimVis().real)
 show()

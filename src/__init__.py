@@ -1,1 +1,2 @@
-import SimVis,Distributions
+from SimVis import *
+from Distributions import *
