@@ -3,11 +3,12 @@ import glob
 __version__='1.0.0'
 
 setup_args = {
-        'name': 'polsim',
+        'name': 'PolSim',
         'author': 'David F. Moore',
         'author_email': 'damo@sas.upenn.edu',
         'license': 'GPL',
-        'package_dir': {'polsim':'src'},
+        'packages': ['PolSim'],
+        'package_dir': {'PolSim':'src'},
         'scripts': glob.glob('scripts/*.*'),
         'version': __version__,
         }
