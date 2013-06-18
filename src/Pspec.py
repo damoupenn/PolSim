@@ -6,8 +6,6 @@ class SimVis(SimVis.SimVis):
         SimVis.__init__(self, DistObject, BeamObject, bl, fqs, mfreq=mfreq)
 
     def GenCell(self, f0, df):
-        filter_ = np.where(freqs <= f0 - df/2., 0., 1.)
-        filter_ = np.where(freqs <= f0 + df/2., 0., filter_)
         return None
 
     def Vis2k3Pk(self, Vis, Nann=12):

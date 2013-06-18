@@ -1,3 +1,0 @@
-import PolSim
-
-D = ±
