@@ -13,7 +13,7 @@ class SimVis(SimVis.SimVis):
         Nchan = len(self.fqs)
         Vis *= _pspec.jy2T(self.fqs)
 
-        returnD, returnK, returnZ = [],[],[]
+        returnD, returnK = {},{}
         for i in range(Nann):
 
             if i == 0:
@@ -38,8 +38,8 @@ class SimVis(SimVis.SimVis):
             _d = _pspec.k3pk_from_Trms([Trms[fmid]],[1.],
                     k=_ks[fmid][0], fq=np.median(_fqs), B=BW)[0]
 
-            returnD.append(_d)
-            returnK.append(_ks[fmid][0])
-            returnZ.append(_pspec.f2z(fmid))
+            zmid = _pspec.f2z(fmid)
+            returnD[zmid] = _d
+            returnK[zmid] = _ks[fmid][0]
 
-        return returnZ, returnK, returnD
+        return returnK, returnD
