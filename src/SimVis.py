@@ -16,16 +16,16 @@ class SimVis:
     def spindex(self,G):
         return (self.mfreq/self.fqs)**G
 
-    def RMspec(self, flx, rm, pa, L, G):
+    def RMspec(self, pf, flx, rm, pa, L, G):
         phs = (rm/np.pi)*self.l2 + self.fqs *(self.bl * L / c) + pa
-        return flx * self.spindex(G) * np.exp(-2.j*np.pi * phs)
+        return pf * flx * self.spindex(G) * np.exp(-2.j*np.pi * phs)
 
-    def SimVis(self):
+    def SimVis(self, pol):
         prms = self.prms
         vis = None
         for F,L,G,P,RM,X in zip(prms['F'], prms['L'], prms['G'], prms['P'], prms['RM'], prms['X']):
             if vis is None:
-                vis = P * self.RMspec(F, RM, X, L, G)
+                vis = self.beam.Response(L, M, pol) * self.RMspec(P, F, RM, X, L, G)
             else:
-                vis += P * self.RMspec(F, RM, X, L, G)
+                vis += self.beam.Response(L, M, pol) self.RMspec(P, F, RM, X, L, G)
         return vis
