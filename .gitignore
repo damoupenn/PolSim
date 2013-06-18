@@ -8,6 +8,7 @@ build
 ########
 
 *.log
+scripts.old
 
 # Crap from vim #
 #################

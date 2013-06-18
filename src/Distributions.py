@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.special import erfc,erfcinv
+from scipy.special import erfc, erfcinv
 
 c = 0.3 # m/ns
 twopi = 2.*np.pi

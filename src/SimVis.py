@@ -27,5 +27,5 @@ class SimVis:
             if vis is None:
                 vis = self.beam.Response(L, M, pol) * self.RMspec(P, F, RM, X, L, G)
             else:
-                vis += self.beam.Response(L, M, pol) self.RMspec(P, F, RM, X, L, G)
+                vis += self.beam.Response(L, M, pol) * self.RMspec(P, F, RM, X, L, G)
         return vis
