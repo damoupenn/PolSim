@@ -1,7 +1,8 @@
 from _pspec import *
 from capo import pfb
+import SimVis as SV
 
-class SimVis(SimVis.SimVis):
+class SimVis(SV.SimVis):
     def __init__(self, DistObject, BeamObject, bl, fqs, mfreq=0.15):
         SimVis.__init__(self, DistObject, BeamObject, bl, fqs, mfreq=mfreq)
 

@@ -1,6 +1,6 @@
 '''Units in mK, GHz, Mpc unless stated otherwise'''
 import numpy as n, aipy as a
-import pfb
+from capo import pfb
 
 F21 = 1.42040575177 # GHz
 LST_RES = 2*n.pi/24
@@ -24,7 +24,7 @@ def dL_dth(z):
     return 1.9 * (1./a.const.arcmin) * ((1+z) / 10.)**.2
 def dk_deta(z):
     '''2pi * [h Mpc^-1] / [GHz^-1]'''
-    return 2*n.pi / dL_df(z) 
+    return 2*n.pi / dL_df(z)
 def dk_du(z):
     '''2pi * [h Mpc^-1] / [wavelengths], valid for u >> 1.'''
     #return 2*n.pi / (dL_dth(z) * (n.pi / 2)) # this expression works only for u ~ 0.5
@@ -95,7 +95,7 @@ def rebin_log(x, y, bin=10):
     logx = .5 * (bins[1:] + bins[:-1])
     return n.e**logx, hist1 / n.where(hist2 == 0, 1., hist2)
 def f2eta(f):
-    '''Convert an array of frequencies to an array of etas (freq^-1) 
+    '''Convert an array of frequencies to an array of etas (freq^-1)
     corresponding to the bins that an FFT generates.'''
     return n.fft.fftfreq(f.shape[-1], f[1]-f[0])
 
@@ -115,7 +115,7 @@ def circ(dim, r, thresh=.4):
     return n.where(x**2 + y**2 > r**2, 0, 1.)
     rin,rout = int(r/sqrt2)-1, int(r)+1
     d1,d2,d3,d4 = dim/2-rout,dim/2-rin,dim/2+rin,dim/2+rout
-    # If big circle, start as 1 and set a bounding box to 0.  
+    # If big circle, start as 1 and set a bounding box to 0.
     # If small, start as 0 and set a bounded box to 1.
     if r > dim/2:
         rv = n.ones((dim,dim), dtype=n.float)
@@ -156,7 +156,7 @@ def _circ(x, y, r, p, thresh):
 def ring(dim, r_inner, r_outer, thresh=.4):
     return circ(dim, r_outer, thresh=thresh) - circ(dim, r_inner, thresh=thresh)
 
-def Trms_vs_fq(fqs, jy_spec, umag150=20., B=.008, cen_fqs=None, ntaps=3, 
+def Trms_vs_fq(fqs, jy_spec, umag150=20., B=.008, cen_fqs=None, ntaps=3,
         window='kaiser3', bm_poly=DEFAULT_BEAM_POLY, bm_fqs=None):
     if bm_fqs is None: bm_fqs = fqs
     dfq = fqs[1] - fqs[0]
@@ -183,7 +183,7 @@ def Trms_vs_fq(fqs, jy_spec, umag150=20., B=.008, cen_fqs=None, ntaps=3,
         # Trms has both the primary beam and bandwidth divided out, matching Trms in Parsons et al. (2012).
         Trms[fq0], ks[fq0] = _Trms, (_ks, k_pl, k_pr)
     return Trms, ks
-    
+
 
 def Trms2_vs_umag(uvs, bms, umag_px, uv_bm_area=2., umin=4., umax=200., logstep=.1):
     ubins = 10**n.arange(n.log10(umin), n.log10(umax), logstep)
