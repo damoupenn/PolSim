@@ -9,6 +9,8 @@ setup_args = {
         'license': 'GPL',
         'packages': ['PolSim'],
         'package_dir': {'PolSim':'src'},
+        'package_data': {'data':['input_data/*'],
+                            'config':['config_files/*']},
         'scripts': glob.glob('scripts/*.*'),
         'version': __version__,
         }
