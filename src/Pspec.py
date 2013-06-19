@@ -1,10 +1,10 @@
 from _pspec import *
 from capo import pfb
-import SimVis as SV
+import SimVis as _SV
 
-class SimVis(SV.SimVis):
+class SimVis(_SV.SimVis):
     def __init__(self, DistObject, BeamObject, bl, fqs, mfreq=0.15):
-        SimVis.__init__(self, DistObject, BeamObject, bl, fqs, mfreq=mfreq)
+        _SV.SimVis.__init__(self, DistObject, BeamObject, bl, fqs, mfreq=mfreq)
 
     def GenCell(self, f0, df):
         return None

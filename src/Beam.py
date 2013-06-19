@@ -13,17 +13,17 @@ class AipyBeam:
         self.aa = aa
     def Response(self, l, m, pol):
         z = np.sqrt(1.-l**2-m**2)
-        aa.ants[0].set_active_pol(pol[0])
-        BM = aa.ants[0].bm_response((L[i],M[i],z))[:,0]**2
-        BM /= aa.ants[0].bm_response((0,0,1))[:,0]**2
+        self.aa.ants[0].set_active_pol(pol[0])
+        BM = self.aa.ants[0].bm_response((L[i],M[i],z))[:,0]**2
+        BM /= self.aa.ants[0].bm_response((0,0,1))[:,0]**2
         return BM
 
 class HPXBeam:
     def __init__(self, hpx_alms):
         print 'Generating beams (this may take a second...'
         self.alms = hpx_alms
-        self.bmx = hp.alm2map(hpx_alms)
-        self.bmy = self.rotate_xy(self.bmx)
+        self.x = hp.alm2map(hpx_alms)
+        self.y = self.rotate_xy(self.bmx)
     def Response(self, l, m, pol):
         z = np.sqrt(1.-l**2-m**2)
         if pol == 'xx':

@@ -23,8 +23,9 @@ class SimVis:
     def SimVis(self, pol):
         prms = self.prms
         vis = None
-        for F,L,G,P,RM,X in zip(prms['F'], prms['L'], prms['G'], prms['P'], prms['RM'], prms['X']):
+        for F,L,M,G,P,RM,X in zip(prms['F'], prms['L'], prms['M'], prms['G'], prms['P'], prms['RM'], prms['X']):
             if vis is None:
+                print self.beam
                 vis = self.beam.Response(L, M, pol) * self.RMspec(P, F, RM, X, L, G)
             else:
                 vis += self.beam.Response(L, M, pol) * self.RMspec(P, F, RM, X, L, G)
