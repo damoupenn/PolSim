@@ -1,4 +1,5 @@
 from _pspec import *
+import numpy as np
 from capo import pfb
 import SimVis as _SV
 
@@ -12,7 +13,7 @@ class SimVis(_SV.SimVis):
     def Vis2k3Pk(self, Vis, Nann=12):
 
         Nchan = len(self.fqs)
-        Vis *= _pspec.jy2T(self.fqs)
+        Vis *= jy2T(self.fqs)
 
         returnD, returnK = {},{}
         for i in range(Nann):
@@ -29,17 +30,17 @@ class SimVis(_SV.SimVis):
             ch_in = ch1 - dchan
             ch_out = ch2 + dchan
 
-            _fq = self.freqs[ch1:ch2]
+            _fq = self.fqs[ch1:ch2]
             _v = Vis[ch_in:ch_out]
             pfreqs = self.fqs[ch_in:ch_out]
 
             BW = _fq[-1]-_fq[0]
-            Trms, _ks = _pspec.Trms_vs_fq(pfreqs, _v, B=BW, window='blackman-harris')
+            Trms, _ks = Trms_vs_fq(pfreqs, _v, B=BW, window='blackman-harris')
             fmid = _ks.keys()[0]
-            _d = _pspec.k3pk_from_Trms([Trms[fmid]],[1.],
-                    k=_ks[fmid][0], fq=np.median(_fqs), B=BW)[0]
+            _d = k3pk_from_Trms([Trms[fmid]],[1.],
+                    k=_ks[fmid][0], fq=np.median(_fq), B=BW)[0]
 
-            zmid = _pspec.f2z(fmid)
+            zmid = f2z(fmid)
             returnD[zmid] = _d
             returnK[zmid] = _ks[fmid][0]
 
