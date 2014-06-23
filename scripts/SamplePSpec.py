@@ -25,7 +25,7 @@ RM_DIST_FILE = 'input_data/Oppermann.copy.npz'
 
 aa = a.cal.get_aa(CAL_FILE, fqs)
 Bm = PolSim.Beam(fromaipy=True, aa=aa).beam
-D = PolSim.Dist(CONFIG_FILE, 0.76, RM_DIST_FILE)
+D = PolSim.Dist(CONFIG_FILE, 0.76, RM_DIST_FILE) #beam area = 0.76
 SV = PolSim.SimVis(D, Bm, bl_EW, fqs)
 
 ###########################
