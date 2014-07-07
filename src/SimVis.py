@@ -32,7 +32,7 @@ class SimVis:
             I = self.srcspec(F, L, G)
             Q = sgn * P * self.RMphs(RM, X)
             if vis is None:
-                vis = self.beam.beam.Response(L, M, self.fqs, pol) * (1.+Q) * I
+                vis = self.beam.Response(L, M, pol) * (1.+Q) * I
             else:
-                vis += self.beam.beam.Response(L, M, self.fqs, pol) * (1.+Q) * I
+                vis += self.beam.Response(L, M, pol) * (1.+Q) * I
         return vis

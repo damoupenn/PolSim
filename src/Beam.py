@@ -15,7 +15,7 @@ class AipyBeam:
     def Response(self, l, m, pol):
         z = np.sqrt(1.-l**2-m**2)
         self.aa.ants[0].set_active_pol(pol[0])
-        BM = self.aa.ants[0].bm_response((L[i],M[i],z))[:,0]**2
+        BM = self.aa.ants[0].bm_response((l,m,z))[:,0]**2
         BM /= self.aa.ants[0].bm_response((0,0,1))[:,0]**2
         return BM
 
