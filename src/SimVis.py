@@ -28,8 +28,8 @@ class SimVis:
         prms = self.prms
         vis = None
         if remove:
-            print 'Removing %s sources'%remove
-            flim = sorted(prms['F'])[-remove]
+            print 'Removing %s/%d sources'%(remove,len(prms['F']))
+            flim = sorted(prms['F'])[-(remove+1)]
             print '\t limiting flux = %.2f mJy'%(flim*1000.)
         for F,L,M,G,P,RM,X in zip(prms['F'], prms['L'], prms['M'], prms['G'], prms['P'], prms['RM'], prms['X']):
             if remove:

@@ -1,5 +1,8 @@
 import numpy as np
 from scipy.special import erfc, erfcinv
+from scipy.interpolate import interp1d
+
+from pylab import *
 
 c = 0.3 # m/ns
 twopi = 2.*np.pi
@@ -40,22 +43,21 @@ class Dist:
             if line.startswith('Gsig'):
                 self.Gsig = float(line.split(':')[1])
 
+
     def FindNsrc(self):
-        dNdS_L = (self.aL/(1-self.bL))*(self.So**(1-self.bL))*(1.-(self.Smin/self.So)**(1-self.bL))
-        dNdS_H = (self.aH/(1-self.bH))*(self.Smax**(1-self.bH))*(1.-(self.So/self.Smax)**(1-self.bH))
-        self.Nsrc = int((dNdS_L+dNdS_H)*self.bm)
+        _s = np.linspace(self.Smin,self.Smax,500)
+        def hi(x): return self.bm * self.aH * x**-self.bH
+        def lo(x): return self.bm * self.aL * x**-self.bL
+        dNdS = np.where(_s >= self.So, hi(_s), lo(_s))
+        NgtS = np.cumsum(dNdS)*(_s[1]-_s[0])
+        self.NgtS = (NgtS[-1] - NgtS)
+        self.Nsrc = int(self.NgtS[0] - self.NgtS[-1])
+        self.NgtS /= self.NgtS[0]
+        self.Fs = interp1d(self.NgtS,_s)
+
 
     def DrawSrcFlux(self):
-        Xo = (self.bm/self.Nsrc)*(self.aL/(1.-self.bL))*(self.So**(1.-self.bL))*(1.-(self.Smin/self.So)**(1.-self.bL))
-        def lo(x):
-            Si = self.Smin*(1.+(self.Smin**(self.bL-1.))*((1.-self.bL)/self.aL)*(self.Nsrc/self.bm)*x)**(1./(1.-self.bL))
-            return Si
-        def hi(x):
-            Si = self.So*(1.+(self.So**(self.bH-1.))*((1.-self.bH)/self.aH)*(self.Nsrc/self.bm)*(x-self.So))**(1./(1.-self.bH))
-            return Si
-        X = np.random.uniform(0,1,self.Nsrc)
-        S = np.where(X >= Xo, hi(X), lo(X))
-        return S
+        return self.Fs(np.random.uniform(self.NgtS.min(),self.NgtS.max(),self.Nsrc))
 
     def DrawLogNormal(self):
         Ex = np.log(self.PImu)
