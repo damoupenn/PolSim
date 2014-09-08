@@ -24,15 +24,22 @@ class SimVis:
         phs = (rm/np.pi)*self.l2 + pa
         return np.exp(-2.j*np.pi * phs)
 
-    def SimVis(self, pol):
+    def SimVis(self, pol, remove=None):
         prms = self.prms
         vis = None
+        if remove:
+            print 'Removing %s sources'%remove
+            flim = sorted(prms['F'])[remove]
+            print '\t limiting flux = %.2f mJy'%(flim*1000.)
         for F,L,M,G,P,RM,X in zip(prms['F'], prms['L'], prms['M'], prms['G'], prms['P'], prms['RM'], prms['X']):
+            if remove:
+                if F >= flim:
+                    continue
             sgn = {'xx':1., 'yy':-1.}[pol]
             I = self.srcspec(F, L, G)
             Q = sgn * P * self.RMphs(RM, X)
             if vis is None:
-                vis = self.beam.Response(L, M, pol) * (1.+Q) * I
+                vis  = self.beam.Response(L, M, self.fqs, pol) * (1.+Q) * I
             else:
-                vis += self.beam.Response(L, M, pol) * (1.+Q) * I
+                vis += self.beam.Response(L, M, self.fqs, pol) * (1.+Q) * I
         return vis
