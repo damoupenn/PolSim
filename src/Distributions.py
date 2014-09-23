@@ -60,12 +60,15 @@ class Dist:
         return self.Fs(np.random.uniform(self.NgtS.min(),self.NgtS.max(),self.Nsrc))
 
     def DrawLogNormal(self):
-        Ex = np.log(self.PImu)
-        Sx = np.sqrt(np.log(1.+(self.PIsig/self.PImu)**2))
-        X = np.random.uniform(0,1,self.Nsrc)
-        X *= 0.5*erfc(-1.*(np.log(self.PImax)-Ex)/(Sx*np.sqrt(2.)))
-        X = Ex - np.sqrt(2.)*Sx*erfcinv(2.*X)
-        return np.exp(X)
+        if self.PImu == 0:
+            return np.zeros(self.Nsrc)
+        else:
+            Ex = np.log(self.PImu)
+            Sx = np.sqrt(np.log(1.+(self.PIsig/self.PImu)**2))
+            X = np.random.uniform(0,1,self.Nsrc)
+            X *= 0.5*erfc(-1.*(np.log(self.PImax)-Ex)/(Sx*np.sqrt(2.)))
+            X = Ex - np.sqrt(2.)*Sx*erfcinv(2.*X)
+            return np.exp(X)
 
     def DrawSphere(self):
         cosTh = np.random.uniform(0, 1, self.Nsrc)
