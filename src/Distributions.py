@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.special import erfc, erfcinv
 from scipy.interpolate import interp1d
+from scipy.integrate import quad
 
 from pylab import *
 
@@ -63,12 +64,24 @@ class Dist:
         if self.PImu == 0:
             return np.zeros(self.Nsrc)
         else:
-            Ex = np.log(self.PImu)
-            Sx = np.sqrt(np.log(1.+(self.PIsig/self.PImu)**2))
-            X = np.random.uniform(0,1,self.Nsrc)
-            X *= 0.5*erfc(-1.*(np.log(self.PImax)-Ex)/(Sx*np.sqrt(2.)))
-            X = Ex - np.sqrt(2.)*Sx*erfcinv(2.*X)
-            return np.exp(X)
+            #Use the formula given in Eqn 5 of Hales 2014.
+            def pdf(x):
+                p = -0.5*(np.log10(x/self.PImu)/self.PIsig)**2
+                p = np.exp(p)
+                p /= x*self.PIsig*np.log(10.)*np.sqrt(2.*np.pi)
+                return p
+            def cdf(x):
+                return quad(pdf, 0, x)[0]
+            Xmax = cdf(self.PImax)
+            Xes  = np.linspace(1e-6,1,300)
+            CDF = np.array([cdf(xi) for xi in Xes])
+            return np.interp(np.random.uniform(0, Xmax, self.Nsrc), CDF, Xes)
+            #Ex = np.log(self.PImu)
+            #Sx = np.sqrt(np.log(1.+(self.PIsig/self.PImu)**2))
+            #X = np.random.uniform(0,1,self.Nsrc)
+            #X *= 0.5*erfc(-1.*(np.log(self.PImax)-Ex)/(Sx*np.sqrt(2.)))
+            #X = Ex - np.sqrt(2.)*Sx*erfcinv(2.*X)
+            #return np.exp(X)
 
     def DrawSphere(self):
         cosTh = np.random.uniform(0, 1, self.Nsrc)

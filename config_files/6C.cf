@@ -29,9 +29,9 @@ Smin: 0.5
 ######################################
 
 #mean fraction
-Pmean: 0.0201 
+Pmean: 0.04 
 #standard deviation
-Psig: 0.0384 
+Psig: 0.3 
 #throw out fractons drawn above this value
 Pmax: 0.1 
 
